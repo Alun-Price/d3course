@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sol LeWitt Exercise</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+  <body>
+    <script>
+      // Open Chrome developer tools to see this.
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+      const height = window.innerHeight;
+      const width = window.innerWidth;
+      const n = 100;
+
+      svg.setAttribute("height", height);
+      svg.setAttribute("width", width);
+      document.body.appendChild(svg);
+
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+      }
+
+      const randomOffset = getRandomInt(height / 4);
+
+      console.log(randomOffset);
+
+      const maskRect = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect"
+      );
+      maskRect.setAttribute("height", height);
+      maskRect.setAttribute("width", width);
+      maskRect.setAttribute("fill", "black");
+
+      const northPolygon = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polygon"
+      );
+
+      northPolygon.setAttribute(
+        "points",
+        `${randomOffset},0 ${width / 2},${
+          height / 2
+        }  ${width},${randomOffset} ${width},0`
+      );
+
+      northPolygon.setAttribute("fill", "white");
+
+      const northMask = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "mask"
+      );
+      northMask.setAttribute("id", "northMask");
+      northMask.appendChild(maskRect);
+      northMask.appendChild(northPolygon);
+      svg.appendChild(northMask);
+      let northTracker = 0;
+      for (let i = 0; i < n; i++) {
+        let rect = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
+
+        const tempHeight = 15 - getRandomInt(6);
+        const tempJump = 10 - getRandomInt(6);
+
+        rect.setAttribute("height", tempHeight);
+        rect.setAttribute("width", width);
+        rect.setAttribute("y", northTracker);
+        rect.setAttribute("mask", "url(#northMask)");
+        svg.appendChild(rect);
+
+        northTracker += tempHeight + tempJump;
+      }
+
+      const eastPolygon = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polygon"
+      );
+
+      eastPolygon.setAttribute(
+        "points",
+        `${width},${randomOffset} ${width / 2},${height / 2} ${
+          width - randomOffset
+        },${height} ${width},${height}`
+      );
+      eastPolygon.setAttribute("fill", "white");
+      const eastMask = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "mask"
+      );
+      eastMask.setAttribute("id", "eastMask");
+      eastMask.appendChild(maskRect);
+      eastMask.appendChild(eastPolygon);
+      svg.appendChild(eastMask);
+      let eastTracker = 0;
+      const eastRotate = 2;
+      for (let i = 0; i < n; i++) {
+        let rect = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
+
+        const tempWidth = 15 - getRandomInt(6);
+        const tempJump = 10 - getRandomInt(6);
+
+        rect.setAttribute("width", tempWidth);
+        rect.setAttribute("height", height);
+        rect.setAttribute("x", eastTracker);
+        //rect.setAttribute('transform', `rotate(${eastRotate})`);
+        rect.setAttribute("mask", "url(#eastMask)");
+        svg.appendChild(rect);
+
+        eastTracker += tempWidth + tempJump;
+      }
+
+      const southPolygon = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polygon"
+      );
+
+      southPolygon.setAttribute(
+        "points",
+        `${width - randomOffset},${height} ${width / 2},${height / 2} 0,${
+          height - randomOffset
+        } 0,${height}`
+      );
+      southPolygon.setAttribute("fill", "white");
+
+      const southMask = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "mask"
+      );
+      southMask.setAttribute("id", "southMask");
+      southMask.appendChild(maskRect);
+      southMask.appendChild(southPolygon);
+      svg.appendChild(southMask);
+      let southTracker = 0;
+      for (let i = 0; i < n; i++) {
+        let rect = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
+
+        const tempHeight = 10 - getRandomInt(6);
+        const tempJump = 15 - getRandomInt(6);
+
+        rect.setAttribute("height", tempHeight);
+        rect.setAttribute("width", width);
+        rect.setAttribute("y", southTracker);
+        rect.setAttribute("mask", "url(#southMask)");
+        svg.appendChild(rect);
+
+        southTracker += tempHeight + tempJump;
+      }
+
+      const westPolygon = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polygon"
+      );
+
+      westPolygon.setAttribute(
+        "points",
+        `${randomOffset},0 ${width / 2},${height / 2} 0,${
+          height - randomOffset
+        } 0,0`
+      );
+      westPolygon.setAttribute("fill", "white");
+      const westMask = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "mask"
+      );
+      westMask.setAttribute("id", "westMask");
+      westMask.appendChild(maskRect);
+      westMask.appendChild(westPolygon);
+      svg.appendChild(westMask);
+      let westTracker = 0;
+      for (let i = 0; i < n; i++) {
+        let rect = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
+
+        const tempWidth = 10 - getRandomInt(6);
+        const tempJump = 15 - getRandomInt(6);
+
+        rect.setAttribute("width", tempWidth);
+        rect.setAttribute("height", height);
+        rect.setAttribute("x", westTracker);
+        rect.setAttribute("mask", "url(#westMask)");
+        svg.appendChild(rect);
+
+        westTracker += tempWidth + tempJump;
+      }
+
+      console.log(document.body);
+    </script>
+  </body>
+</html>
